@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+    <h1>Profile List<h1>
+<br>
+
+{% if profiles %}
+    {% for profile in profiles %}
+
+        <div class="card mb-3" style="max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img  src="{% static 'images/Default_pfp.svg' %}" class="img-fluid rounded-start" alt="profile picture">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <p class="card-text">{{ profile.user.username }}</p>
+                        <h5 class="card-title"><a href="{% url 'profile' profile.user.id %}">@{{ profile.user.username|lower }}</a></h5>
+                        <br>
+                        
+                        <h6 class="card-title"><small class="text-body-secondary">Last Updated: {{ profile.date_modified }}</small></h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+
+
+    {% endfor %}
+{% endif %}
+
+
+{% endblock %}
