@@ -3,4 +3,13 @@
 
 {% block content %}
     <h1>Profile<h1>
+<br>
+
+    {% for tweet in tweets %}
+        <div class="alert alert-dark" role="alert">
+            <h5>{{ tweet }} </h5>
+        </div>
+
+<br>
+    {% endfor %}
 {% endblock %}
