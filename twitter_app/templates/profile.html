@@ -7,6 +7,15 @@
         <div class="row">
             <div class="col-8">
                 <h1>{{ profile.user.username }}'s Profile</h1>
+                <br>
+                {% if tweets %}
+                    {% for tweet in tweets %}
+                        <div class="alert alert-dark" role="alert">
+                            {{ tweet }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
             </div>
             <div class="col-4">
                 <div class="card">
@@ -30,6 +39,20 @@
                         </p>
                     </div>
                 </div>
+                <br>
+
+                <form method="POST">
+                    {% csrf_token %}
+
+                    {% if profile in user.profile.follows.all %}
+                        <button class="btn btn-outline-danger" name="follow" value="unfollow" type="submit">Unfollow {{ profile.user.username|lower }}</button>
+
+                    {% else %}
+                    <button class="btn btn-outline-success" name="follow" value="follow" type="submit">Follow {{ profile.user.username|lower }}</button>
+                    {% endif %}
+                </form>
+                <br>
+
             </div>
         </div>
     </div>
