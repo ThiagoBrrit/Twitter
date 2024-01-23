@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
 
 {% if profile %}
@@ -10,17 +11,38 @@
                 <br>
                 {% if tweets %}
                     {% for tweet in tweets %}
-                        <div class="alert alert-dark" role="alert">
+            <div class="alert alert-dark" role="alert">
+    <div class="container">
+        <div class="row">
+            <div class="col-1">
+                {% if profile.profile_image %}
+                    <img src="{{ profile.profile_image.url }}" style="height: 50px; width: 50px;" class="rounded-circle" alt="{{ profile.user.username }} ">
+                {% else %}
+                    <img src="{% static 'images/profile_default.png' %}" style="height: 50px; width: 50px;" class="rounded-circle" alt="{{ profile.user.username }} ">
+                {% endif %}
+
+            </div>
+
+            <div class="col-11">
                             <h5>{{ tweet.body }} </h5>
                             <small class="text-muted">
                                 ({{ tweet.created_at }}) By @{{ tweet.user.username|lower }}
                             </small>
                         </div>
+            </div>
+        </div>
+    </div>
                     {% endfor %}
                 {% endif %}
 
             </div>
             <div class="col-4">
+<br>
+                {% if profile.profile_image %}
+                    <img class="rounded-circle" style="height: 200px; width: 200px;" src="{{ profile.profile_image.url }}">
+                {% endif %}
+
+<br><br>
                 <div class="card">
                     <h5 class="card-header">Follows</h5>
                     <div class="card-body">
@@ -31,7 +53,7 @@
                         </p>
                     </div>
                 </div>
-<br><br>
+<br><br> 
                 <div class="card">
                     <h5 class="card-header">Followed By</h5>
                     <div class="card-body">
@@ -56,6 +78,9 @@
                 </form>
                 <br>
 
+    {% if request.user.id == profile.user.id %}
+        <a href="{% url 'update_user' %}" class="btn btn-outline-secondary">Update Profile</a>
+    {% endif %}
             </div>
         </div>
     </div>
