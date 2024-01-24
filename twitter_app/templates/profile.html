@@ -27,6 +27,14 @@
                             <h5>{{ tweet.body }} </h5>
                             <small class="text-muted">
                                 ({{ tweet.created_at }}) By @{{ tweet.user.username|lower }}
+                                - {{ tweet.number_of_likes }} Likes -
+                                {% if user in tweet.likes.all %}
+                                    <a href="{% url 'tweet_like' tweet.id %}"><i class="fa-solid fa-heart" style="color: red;"></i></a>
+                                {% else %}
+                                    <a href="{% url 'tweet_like' tweet.id %}"><i class="fa fa-heart-o" style="color: red;"></i></a>
+                                {% endif %}
+                                &nbsp;&nbsp;
+                                <a href="{% url 'tweet_show' tweet.id %}"><i class="fa-solid fa-share" style="color: gray;"></i></a>
                             </small>
                         </div>
             </div>
@@ -40,9 +48,34 @@
 <br>
                 {% if profile.profile_image %}
                     <img class="rounded-circle" style="height: 200px; width: 200px;" src="{{ profile.profile_image.url }}">
+                    <br>
+                {% endif %}
+                
+                {% if profile.homepage_link %}
+                    <a href="{{ profile.homepage_link }}" target="new"><i style="color: gray;" class="fa-solid fa-link"></i></a>
+                    &nbsp;
+                {% endif %}
+
+                {% if profile.facebook_link %}
+                    <a href="{{ profile.facebook_link }}" target="new"><i class="fa-brands fa-facebook"></i></a>
+                    &nbsp;
+                {% endif %}
+
+                {% if profile.instagram_link %}
+                    <a href="{{ profile.instagram_link }}" target="new"><i style="color: red;" class="fa-brands fa-instagram"></i></a>
+                    &nbsp;
+                {% endif %}
+
+                {% if profile.linkedin_link %}
+                    <a href="{{ profile.linkedin_link }}" target="new"><i style="color: blue;" class="fa-brands fa-linkedin-in"></i></a>
+                    &nbsp;
                 {% endif %}
 
 <br><br>
+{% if profile.profile_bio %}
+    <p align="justify">{{ profile.profile_bio }}</p>
+{% endif %}
+<br>
                 <div class="card">
                     <h5 class="card-header">Follows</h5>
                     <div class="card-body">
