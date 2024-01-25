@@ -197,3 +197,67 @@ def tweet_show(request, pk):
     else:
         messages.success(request, ("That Tweet Does Not Exist."))
         return redirect('home')
+
+
+def delete_tweet(request, pk):
+    if request.user.is_authenticated:
+        tweet = get_object_or_404(Tweet, id=pk)
+        # verifica se você está vendo o tweet
+        if request.user.username == tweet.user.username:
+            # removendo o tweet
+            tweet.delete()
+            messages.success(request, ("The Tweet has been delete"))
+            return redirect(request.META.get("HTTP_REFERER"))
+        else:
+            messages.success(request, ("You Don't own that tweet"))
+            return redirect('home')
+    else:
+        messages.success(request, ("Please log in to continue"))
+        return redirect(request.META.get("HTTP_REFERER"))
+
+
+def edit_tweet(request, pk):
+    if request.user.is_authenticated:
+        # pegando o tweet
+        tweet = get_object_or_404(Tweet, id=pk)
+        # verifica se você está vendo o tweet
+        if request.user.username == tweet.user.username:
+            form = TweetForm(request.POST or None, instance=tweet)
+            if request.method == "POST":
+                if form.is_valid():
+                    tweet = form.save(commit=False)
+                    tweet.user = request.user
+                    tweet.save()
+                    messages.success(request, ("Your Tweet has been updated."))
+                    return redirect('home')
+            else:
+                return render(request, 'edit_tweet.html', {'form':form, 'tweet':tweet})
+            
+        else:
+            messages.success(request, ("You Don't own that tweet"))
+            return redirect('home')
+    else:
+        messages.success(request, ("Please log in to continue"))
+        return redirect('home')
+
+
+def search(request):
+    if request.method == "POST":
+        # Pegando o campo do formulario para procurar
+        search = request.POST['search']
+        # Procurando no banco de dados
+        searched = Tweet.objects.filter(body__contains =search)
+        return render(request, 'search.html', {'search':search, 'searched':searched})
+    else:
+        return render(request, 'search.html', {})
+
+
+def search_user(request):
+    if request.method == "POST":
+        # Pegando o campo do formulario para procurar
+        search = request.POST['search']
+        # Procurando no banco de dados
+        searched = User.objects.filter(username__contains = search)
+        return render(request, 'search_user.html', {'search':search, 'searched':searched})
+    else:
+        return render(request, 'search_user.html', {})
