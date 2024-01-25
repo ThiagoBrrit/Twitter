@@ -2,10 +2,10 @@
 {% block content %}
 
 {% if user.is_authenticated %}
-<h1>You're Already Logged In!</h1>
+<h1>Você já está logado!</h1>
 {% else %}
 <div class="col-md-6 offset-md-3">
-    <h1>Login</h1> <br>
+    <h1>Conectar</h1> <br>
 
     <form method="POST" action="{% url 'login' %}">
         {% csrf_token %}
@@ -19,7 +19,7 @@
             <input type="password" class="form-control" name="password" placeholder="Digite sua senha">
         </div>
         <br>
-        <button type="submit" class="btn btn-secondary">Submit</button>
+        <button type="submit" class="btn btn-secondary">Entrar</button>
     </form>
 
 </div>

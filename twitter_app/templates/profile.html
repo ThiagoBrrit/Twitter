@@ -7,7 +7,7 @@
     <div class="container text-center">
         <div class="row">
             <div class="col-8">
-                <h1>{{ profile.user.username }}'s Profile</h1>
+                <h1>Perfil do {{ profile.user.username }}</h1>
                 <br>
                 {% if tweets %}
                     {% for tweet in tweets %}
@@ -26,8 +26,8 @@
             <div class="col-11">
                             <h5>{{ tweet.body }} </h5>
                             <small class="text-muted">
-                                ({{ tweet.created_at }}) By @{{ tweet.user.username|lower }}
-                                - {{ tweet.number_of_likes }} Likes -
+                                ({{ tweet.created_at }}) Por @{{ tweet.user.username|lower }}
+                                - {{ tweet.number_of_likes }}
                                 {% if user in tweet.likes.all %}
                                     <a href="{% url 'tweet_like' tweet.id %}"><i class="fa-solid fa-heart" style="color: red;"></i></a>
                                 {% else %}
@@ -82,7 +82,7 @@
 {% endif %}
 <br>
                 <div class="card">
-                    <h5 class="card-header">Follows</h5>
+                    <h5 class="card-header">Seguindo:</h5>
                     <div class="card-body">
                         <p class="card-text">
                             {% for following in profile.follows.all|slice:3 %} <br>
@@ -92,12 +92,12 @@
                         </p>
                     </div>
                     <div class="card-footer">
-                        <a href="{% url 'follows' profile.user.id %}" class="btn btn-sm btn-outline-secondary">See All...</a>
+                        <a href="{% url 'follows' profile.user.id %}" class="btn btn-sm btn-outline-secondary">Ver Mais...</a>
                     </div>
                 </div>
 <br><br> 
                 <div class="card">
-                    <h5 class="card-header">Followed By</h5>
+                    <h5 class="card-header">Seguidores:</h5>
                     <div class="card-body">
                         <p class="card-text">
                             {% for following in profile.followed_by.all|slice:3 %} <br>
@@ -112,7 +112,7 @@
                         </p>
                     </div>
                     <div class="card-footer">
-                        <a href="{% url 'followers' profile.user.id %}" class="btn btn-sm btn-outline-secondary">See All...</a>
+                        <a href="{% url 'followers' profile.user.id %}" class="btn btn-sm btn-outline-secondary">Ver Mais...</a>
                     </div>
                 </div>
                 <br>
@@ -121,16 +121,16 @@
                     {% csrf_token %}
 
                     {% if profile in user.profile.follows.all %}
-                        <button class="btn btn-outline-danger" name="follow" value="unfollow" type="submit">Unfollow {{ profile.user.username|lower }}</button>
+                        <button class="btn btn-outline-danger" name="follow" value="unfollow" type="submit">Deixar de seguir {{ profile.user.username|lower }}</button>
 
                     {% else %}
-                    <button class="btn btn-outline-success" name="follow" value="follow" type="submit">Follow {{ profile.user.username|lower }}</button>
+                    <button class="btn btn-outline-success" name="follow" value="follow" type="submit">Seguir {{ profile.user.username|lower }}</button>
                     {% endif %}
                 </form>
                 <br>
 
     {% if request.user.id == profile.user.id %}
-        <a href="{% url 'update_user' %}" class="btn btn-outline-secondary">Update Profile</a>
+        <a href="{% url 'update_user' %}" class="btn btn-outline-secondary">Atualizar Perfil</a>
     {% endif %}
             </div>
         </div>
