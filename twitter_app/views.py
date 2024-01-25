@@ -36,6 +36,38 @@ def profile_list(request):
         return redirect('home')
 
 
+def unfollow(request, pk):
+    if request.user.is_authenticated:
+        # Obtendo o perfil para deixar de seguir
+        profile = Profile.objects.get(user__id=pk)
+        # Deixando de seguir o perfil
+        request.user.profile.follows.remove(profile)
+        # Salvando o nosso perfil
+        request.user.profile.save()
+        # Retornando uma messagem
+        messages.success(request, (f"You Have Successfully Unfollowed {profile.user.username}"))
+        return redirect(request.META.get("HTTP_REFERER"))
+    else:
+        messages.success(request, ("You must be logged in to view this page."))
+        return redirect('home')
+
+
+def follow(request, pk):
+    if request.user.is_authenticated:
+        # Obtendo o perfil para seguir de volta
+        profile = Profile.objects.get(user__id=pk)
+        # seguindo o perfil
+        request.user.profile.follows.add(profile)
+        # Salvando o nosso perfil
+        request.user.profile.save()
+        # Retornando uma messagem
+        messages.success(request, (f"You Have Successfully followed {profile.user.username}"))
+        return redirect(request.META.get("HTTP_REFERER"))
+    else:
+        messages.success(request, ("You must be logged in to view this page."))
+        return redirect('home')
+
+
 def profile(request, pk):
     if request.user.is_authenticated:
         profile = Profile.objects.get(user_id=pk)
@@ -51,6 +83,32 @@ def profile(request, pk):
             current_user_profile.save()
 
         return render(request, 'profile.html', {'profile':profile, "tweets":tweets})
+    else:
+        messages.success(request, ("You must be logged in to view this page."))
+        return redirect('home')
+
+
+def followers(request, pk):
+    if request.user.is_authenticated:
+        if request.user.id == pk:
+            profiles = Profile.objects.get(user_id=pk)
+            return render(request, 'followers.html', {"profiles":profiles})
+        else:
+            messages.success(request, ("That's Not Your Profile Page."))
+            return redirect('home')
+    else:
+        messages.success(request, ("You must be logged in to view this page."))
+        return redirect('home')
+
+
+def follows(request, pk):
+    if request.user.is_authenticated:
+        if request.user.id == pk:
+            profiles = Profile.objects.get(user_id=pk)
+            return render(request, 'follows.html', {"profiles":profiles})
+        else:
+            messages.success(request, ("That's Not Your Profile Page."))
+            return redirect('home')
     else:
         messages.success(request, ("You must be logged in to view this page."))
         return redirect('home')
