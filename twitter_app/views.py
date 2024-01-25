@@ -17,7 +17,7 @@ def home(request):
                 tweet = form.save(commit=False)
                 tweet.user = request.user
                 tweet.save()
-                messages.success(request, ("Your Tweet has been posted."))
+                messages.success(request, ("Seu tweet foi postado."))
                 return redirect('home')
 
         tweets = Tweet.objects.all().order_by("-created_at")
@@ -32,7 +32,7 @@ def profile_list(request):
         profiles = Profile.objects.exclude(user=request.user)
         return render(request, 'profile_list.html', {"profiles":profiles})
     else:
-        messages.success(request, ("You must be logged in to view this page."))
+        messages.success(request, ("Você deve estar logado para visualizar esta página."))
         return redirect('home')
 
 
@@ -45,10 +45,10 @@ def unfollow(request, pk):
         # Salvando o nosso perfil
         request.user.profile.save()
         # Retornando uma messagem
-        messages.success(request, (f"You Have Successfully Unfollowed {profile.user.username}"))
+        messages.success(request, (f"Você deixou de seguir com sucesso {profile.user.username}"))
         return redirect(request.META.get("HTTP_REFERER"))
     else:
-        messages.success(request, ("You must be logged in to view this page."))
+        messages.success(request, ("Você deve estar logado para visualizar esta página."))
         return redirect('home')
 
 
@@ -61,10 +61,10 @@ def follow(request, pk):
         # Salvando o nosso perfil
         request.user.profile.save()
         # Retornando uma messagem
-        messages.success(request, (f"You Have Successfully followed {profile.user.username}"))
+        messages.success(request, (f"Você seguiu com sucesso {profile.user.username}"))
         return redirect(request.META.get("HTTP_REFERER"))
     else:
-        messages.success(request, ("You must be logged in to view this page."))
+        messages.success(request, ("Você deve estar logado para visualizar esta página."))
         return redirect('home')
 
 
@@ -84,7 +84,7 @@ def profile(request, pk):
 
         return render(request, 'profile.html', {'profile':profile, "tweets":tweets})
     else:
-        messages.success(request, ("You must be logged in to view this page."))
+        messages.success(request, ("Você deve estar logado para visualizar esta página."))
         return redirect('home')
 
 
@@ -94,10 +94,10 @@ def followers(request, pk):
             profiles = Profile.objects.get(user_id=pk)
             return render(request, 'followers.html', {"profiles":profiles})
         else:
-            messages.success(request, ("That's Not Your Profile Page."))
+            messages.success(request, ("Essa não é a sua página de perfil"))
             return redirect('home')
     else:
-        messages.success(request, ("You must be logged in to view this page."))
+        messages.success(request, ("Você deve estar logado para visualizar esta página."))
         return redirect('home')
 
 
@@ -107,10 +107,10 @@ def follows(request, pk):
             profiles = Profile.objects.get(user_id=pk)
             return render(request, 'follows.html', {"profiles":profiles})
         else:
-            messages.success(request, ("That's Not Your Profile Page."))
+            messages.success(request, ("Essa não é a sua página de perfil."))
             return redirect('home')
     else:
-        messages.success(request, ("You must be logged in to view this page."))
+        messages.success(request, ("Você deve estar logado para visualizar esta página."))
         return redirect('home')
 
 
@@ -121,10 +121,10 @@ def login_user(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            messages.success(request, ("You have been logged in!."))
+            messages.success(request, ("Você está logado!."))
             return redirect('home')
         else:
-            messages.success(request, ("There was an error logging in. Please Try again!."))
+            messages.success(request, ("Ocorreu um erro ao fazer login. Tente novamente!"))
             return redirect('login')
 
     else:
@@ -133,7 +133,7 @@ def login_user(request):
 
 def logout_user(request):
     logout(request)
-    messages.success(request, ("You have been logged out."))
+    messages.success(request, ("Você foi desconectado."))
     return redirect('home')
 
 
@@ -151,7 +151,7 @@ def register_user(request):
 
             user = authenticate(username=username, password=password)
             login(request, user)
-            messages.success(request, ("You have successfully registered. WELCOME"))
+            messages.success(request, ("Você se registrou com sucesso. BEM-VINDO"))
             return redirect('home')
     return render(request, 'register.html', {'form':form})
 
@@ -167,13 +167,13 @@ def update_user(request):
             user_form.save()
             profile_form.save()
             login(request, current_user)
-            messages.success(request, ("Your Profile has been updated"))
+            messages.success(request, ("Seu perfil foi atualizado"))
             return redirect('home')
     
 
         return render(request, 'update_user.html', {'user_form':user_form, 'profile_form':profile_form})
     else:
-        messages.success(request, ("You Must be Logged in to view that page"))
+        messages.success(request, ("Você deve estar logado para visualizar essa página"))
         return redirect('home')
     
 
@@ -186,7 +186,7 @@ def tweet_like(request, pk):
             tweet.likes.add(request.user)
         return redirect(request.META.get("HTTP_REFERER"))
     else:
-        messages.success(request, ("You Must be Logged in to view that page"))
+        messages.success(request, ("Você deve estar logado para visualizar essa página"))
         return redirect('home')
     
 def tweet_show(request, pk):
@@ -195,7 +195,7 @@ def tweet_show(request, pk):
         return render(request, 'show_tweet.html', {'tweet':tweet})
 
     else:
-        messages.success(request, ("That Tweet Does Not Exist."))
+        messages.success(request, ("Esse tweet não existe."))
         return redirect('home')
 
 
@@ -206,13 +206,13 @@ def delete_tweet(request, pk):
         if request.user.username == tweet.user.username:
             # removendo o tweet
             tweet.delete()
-            messages.success(request, ("The Tweet has been delete"))
+            messages.success(request, ("O Tweet foi excluído"))
             return redirect(request.META.get("HTTP_REFERER"))
         else:
-            messages.success(request, ("You Don't own that tweet"))
+            messages.success(request, ("Você não é o dono desse tweet"))
             return redirect('home')
     else:
-        messages.success(request, ("Please log in to continue"))
+        messages.success(request, ("Por favor faça o login para continuar"))
         return redirect(request.META.get("HTTP_REFERER"))
 
 
@@ -228,16 +228,16 @@ def edit_tweet(request, pk):
                     tweet = form.save(commit=False)
                     tweet.user = request.user
                     tweet.save()
-                    messages.success(request, ("Your Tweet has been updated."))
+                    messages.success(request, ("Seu Tweet foi atualizado."))
                     return redirect('home')
             else:
                 return render(request, 'edit_tweet.html', {'form':form, 'tweet':tweet})
             
         else:
-            messages.success(request, ("You Don't own that tweet"))
+            messages.success(request, ("Você não é o dono desse tweet"))
             return redirect('home')
     else:
-        messages.success(request, ("Please log in to continue"))
+        messages.success(request, ("Por favor faça o login para continuar"))
         return redirect('home')
 
 

@@ -3,7 +3,7 @@
 
 
 {% block content %}
-    <h1>{{ request.user.username }} is Following...<h1>
+    <h1>Quem Você Segue<h1>
 <br>
 
 {% if profiles %}
@@ -31,7 +31,7 @@
                         </h5>
                         
                         
-                        <h6 class="card-title"><small class="text-body-secondary">Last Updated: {{ profile.date_modified }}</small></h6>
+                        <h6 class="card-title"><small class="text-body-secondary">Ultima atualização: {{ profile.date_modified }}</small></h6>
                     </div>
                 </div>
             </div>

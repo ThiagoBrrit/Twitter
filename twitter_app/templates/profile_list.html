@@ -3,11 +3,12 @@
 
 
 {% block content %}
-    <h1>Profile List<h1>
+    <h1>Lista de Perfis<h1>
 <br>
 
 {% if profiles %}
     {% for profile in profiles %}
+
 
         <div class="card mb-3" style="max-width: 540px;">
             <div class="row g-0">
@@ -17,15 +18,12 @@
                     {% else %}
                     <img  src="{% static 'images/Default_pfp.svg' %}" class="img-fluid rounded-start" alt="profile picture">
                     {% endif %}
-                    
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
                         <p class="card-text">{{ profile.user.username }}</p>
                         <h5 class="card-title"><a href="{% url 'profile' profile.user.id %}">@{{ profile.user.username|lower }}</a></h5>
-                        
-                        
-                        <h6 class="card-title"><small class="text-body-secondary">Last Updated: {{ profile.date_modified }}</small></h6>
+                        <h6 class="card-title"><small class="text-body-secondary">Ultima atualização: {{ profile.date_modified }}</small></h6>
                     </div>
                 </div>
             </div>
